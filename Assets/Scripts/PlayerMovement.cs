@@ -4,10 +4,11 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
     private float move_speed = 5;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private Rigidbody2D rb;
+    private Vector2 direction;
+    void Awake()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -16,8 +17,18 @@ public class PlayerMovement : MonoBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
-        Vector2 direction = new Vector2(horizontal, vertical);
-        Vector3 movement = new(direction.x, direction.y, 0);
-        transform.position += movement * move_speed * Time.deltaTime;
+        direction = new Vector2(horizontal, vertical);
+        if (direction.sqrMagnitude > 1f)
+        {
+            direction.Normalize();
+        }
     }
+
+    void FixedUpdate()
+    {
+        Vector2 targetPos = rb.position + (move_speed * Time.fixedDeltaTime * direction);
+        rb.MovePosition(targetPos);
+    }
+
+
 }
