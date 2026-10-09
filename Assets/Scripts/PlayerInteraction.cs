@@ -2,14 +2,23 @@ using UnityEngine;
 
 public class PlayerInteration : MonoBehaviour
 {
+    // [SerializeField]
+    // private int attackDamage = 10;
+    
     void OnCollisionEnter2D(Collision2D col)
     {
-        Debug.Log("Collision Detected: " + col.gameObject.name);
-        if (col.gameObject.CompareTag("enemy"))
+        if (col.gameObject.CompareTag("wall"))
         {
-            EnemyHealth em = col.gameObject.GetComponent<EnemyHealth>();
-            em.TakeDamage(30);
+            Debug.Log("Hit: " + col.gameObject.name);
         }
+        // else if (col.gameObject.CompareTag("enemy"))
+        // {
+        //     EnemyHealth em = col.gameObject.GetComponent<EnemyHealth>();
+        //     if (em != null)
+        //     {
+        //         em.TakeDamage(attackDamage);
+        //     }
+        // }
     }
 
     void OnTriggerEnter2D(Collider2D col)
