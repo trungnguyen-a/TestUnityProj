@@ -7,6 +7,8 @@ TagManager:
   - coin
   - enemy
   - wall
+  - gem
+  - hazard_zone
   layers:
   - Default
   - TransparentFX
@@ -18,8 +20,8 @@ TagManager:
   - enemy
   - coin
   - wall
-  - 
-  - 
+  - gem
+  - hazard_zone
   - 
   - 
   - 

@@ -13,12 +13,17 @@ public class PlayerCombat : MonoBehaviour
     private float attackCD = .5f;
     [SerializeField]
     private LayerMask enemyLayer;
+    [SerializeField]
+    private LineRenderer attackCircle;
+    [SerializeField]
+    private int circleSegments = 60;
+
     private float nextAttackTime;
-    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -29,6 +34,7 @@ public class PlayerCombat : MonoBehaviour
             Attack();
             nextAttackTime = Time.time + attackCD;
         }
+        DrawAttackCircle();
     }
 
     private void Attack()
@@ -53,5 +59,30 @@ public class PlayerCombat : MonoBehaviour
         }
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+
+    private void DrawAttackCircle()
+    {
+        if (attackCircle == null)
+            return;
+
+        attackCircle.useWorldSpace = false;
+        attackCircle.loop = true;
+        attackCircle.positionCount = circleSegments;
+        attackCircle.startWidth = 0.03f;
+        attackCircle.endWidth = 0.03f;
+        
+        for (int i = 0; i < circleSegments; i++)
+        {
+            float angle = i * Mathf.PI * 2f / circleSegments;
+
+            float x = Mathf.Cos(angle) * attackRange;
+            float y = Mathf.Sin(angle) * attackRange;
+
+            attackCircle.SetPosition(
+            i,
+            new Vector3(x, y, 0)
+            );
+        }
     }
 }

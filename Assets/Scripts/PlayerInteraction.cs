@@ -2,23 +2,12 @@ using UnityEngine;
 
 public class PlayerInteration : MonoBehaviour
 {
-    // [SerializeField]
-    // private int attackDamage = 10;
-    
     void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.CompareTag("wall"))
         {
             Debug.Log("Hit: " + col.gameObject.name);
         }
-        // else if (col.gameObject.CompareTag("enemy"))
-        // {
-        //     EnemyHealth em = col.gameObject.GetComponent<EnemyHealth>();
-        //     if (em != null)
-        //     {
-        //         em.TakeDamage(attackDamage);
-        //     }
-        // }
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -27,6 +16,18 @@ public class PlayerInteration : MonoBehaviour
         {
             Debug.Log("you received a " + col.gameObject.name);
             Destroy(col.gameObject);
+        }
+        if (col.CompareTag("hazard_zone"))
+        {
+            Debug.Log("Player entered hazard" );
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D col)
+    {
+        if (col.CompareTag("hazard_zone"))
+        {
+            Debug.Log("Player left hazard" );
         }
     }
 }
