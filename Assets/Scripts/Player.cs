@@ -11,10 +11,4 @@ public class Player : MonoBehaviour
         Debug.Log("Player level" + level);
         Debug.Log("Player gender: " + gender);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

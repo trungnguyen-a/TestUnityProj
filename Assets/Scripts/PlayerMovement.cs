@@ -29,6 +29,4 @@ public class PlayerMovement : MonoBehaviour
         Vector2 targetPos = rb.position + (move_speed * Time.fixedDeltaTime * direction);
         rb.MovePosition(targetPos);
     }
-
-
 }

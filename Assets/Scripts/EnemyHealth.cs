@@ -1,7 +1,12 @@
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
+    [SerializeField]
+    private int scoreReward = 20;
+    [SerializeField]
+    private GameScore gameScore;
     [SerializeField]
     private int maxHealth = 50;
     [SerializeField]
@@ -21,6 +26,11 @@ public class EnemyHealth : MonoBehaviour
         enemySpawner = FindFirstObjectByType<EnemySpawner>();
         rb = GetComponent<Rigidbody2D>();
         enemyMovement = GetComponent<EnemyMovement>();
+    }
+
+    void Start()
+    {
+        gameScore = GameObject.Find("GameManager").GetComponent<GameScore>();
     }
     
     private void ApplyKnockback(Vector2 attackerPos)
@@ -57,6 +67,15 @@ public class EnemyHealth : MonoBehaviour
     private void Die()
     {
         Destroy(gameObject);
-        enemySpawner.SpawnEnemy();
+
+        if (gameScore != null)
+        {
+            gameScore.AddScore(scoreReward);
+        }
+        
+        if (enemySpawner != null)
+        {
+            enemySpawner.SpawnEnemy();
+        }
     }
 }

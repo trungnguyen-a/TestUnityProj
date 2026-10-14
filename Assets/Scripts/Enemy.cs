@@ -10,10 +10,4 @@ public class Enemy : MonoBehaviour
         Debug.Log("enemy name: " + nameType);
         Debug.Log("enemy level: " + level);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

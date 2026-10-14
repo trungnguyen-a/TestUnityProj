@@ -6,19 +6,8 @@ public class EnemyCombat : MonoBehaviour
     private int attackDamage = 10;
     [SerializeField]
     private float attackCD = 1f;
-    private float nextAttackTime;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private float nextAttackTime;
 
     void OnCollisionStay2D(Collision2D col)
     {
