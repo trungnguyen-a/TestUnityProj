@@ -637,6 +637,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 160920257}
+  - component: {fileID: 160920258}
   m_Layer: 0
   m_Name: Gems
   m_TagString: Untagged
@@ -673,6 +674,19 @@ Transform:
   - {fileID: 1750624415}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &160920258
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 160920256}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!1 &250306155
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,6 +835,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 293437790}
+  - component: {fileID: 293437791}
   m_Layer: 0
   m_Name: HazardZones
   m_TagString: Untagged
@@ -846,6 +861,19 @@ Transform:
   - {fileID: 1213994126}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &293437791
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293437789}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!1 &322459288
 GameObject:
   m_ObjectHideFlags: 0
@@ -4316,6 +4344,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1900383281}
+  - component: {fileID: 1900383282}
   m_Layer: 0
   m_Name: Walls
   m_TagString: Untagged
@@ -4351,6 +4380,19 @@ Transform:
   - {fileID: 322459291}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &1900383282
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900383280}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!1 &1931002641
 GameObject:
   m_ObjectHideFlags: 0
@@ -4367,6 +4409,7 @@ GameObject:
   - component: {fileID: 1931002643}
   - component: {fileID: 1931002642}
   - component: {fileID: 1931002649}
+  - component: {fileID: 1931002650}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -4381,12 +4424,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1931002641}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 802384e98bd5d0b4382075b1a1a9beae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   attackPoint: {fileID: 0}
+  attackDistance: 0.7
   attackRange: 1
   attackDamage: 20
   attackCD: 0.5
@@ -4534,6 +4578,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d7ae705cabf8e241a1d31299f95c32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerPickup
+--- !u!210 &1931002650
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931002641}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 1
+  m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!1 &1935104415
 GameObject:
   m_ObjectHideFlags: 0
