@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 756d92b27c0de96469fee6541c3c4967, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  nameType: SAFSAF
+  nameType: NormalEnemy
   level: 25
 --- !u!50 &166494560038773596
 Rigidbody2D:
