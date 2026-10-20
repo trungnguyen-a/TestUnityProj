@@ -34,10 +34,18 @@ public class GameManager : MonoBehaviour
             gameOverPanel.SetActive(true);
             finalScoreText.text = "FINAL SCORE: " + gameScore.Score;
         }
+        Time.timeScale = 0f;
     }
 
     public void GameRestart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ReturnToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenuScene");
     }
 }
