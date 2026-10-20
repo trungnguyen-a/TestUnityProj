@@ -9,6 +9,7 @@ TagManager:
   - wall
   - gem
   - hazard_zone
+  - potion
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - wall
   - gem
   - hazard_zone
-  - 
+  - potion
   - 
   - 
   - 

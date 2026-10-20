@@ -20,40 +20,53 @@ public class PlayerInteration : MonoBehaviour
     //     }
     // }
 
-    void OnTriggerEnter2D(Collider2D col)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!col.CompareTag("coin"))
-        {
-            return;
-        }
-        
-        if (playerInventory == null || gameScore == null)
+        if (playerInventory == null)
         {
             return;
         }
 
-        var points = col.gameObject.name switch
+        if (collision.CompareTag("coin"))
         {
-            "BronzeCoin" => 1,
-            "SilverCoin" => 5,
-            "GoldCoin" => 10,
-            _ => 1,
-        };
-        gameScore.AddScore(points);
-        playerInventory.AddCoin(1);
-        Destroy(col.gameObject);
-        
+            if (gameScore == null)
+            {
+                return;
+            }
+
+            var points = collision.gameObject.name switch
+            {
+                "BronzeCoin" => 1,
+                "SilverCoin" => 5,
+                "GoldCoin" => 10,
+                _ => 1,
+            };
+            gameScore.AddScore(points);
+            playerInventory.AddCoin(1);
+            Destroy(collision.gameObject);
+            return;
+        }
+
+        ItemPickup itemPickup = collision.GetComponent<ItemPickup>();
+        if (itemPickup != null)
+        {
+            Item item = itemPickup.CreateItem();
+            playerInventory.AddItem(item);
+            Debug.Log("Picked up: " + item.itemName);
+            Destroy(collision.gameObject);
+        }
+
         // if (col.CompareTag("hazard_zone"))
         // {
         //     Debug.Log("Player entered hazard" );
         // }
     }
 
-    // void OnTriggerExit2D(Collider2D col)
-    // {
-    //     if (col.CompareTag("hazard_zone"))
-    //     {
-    //         Debug.Log("Player left hazard" );
-    //     }
-    // }
+//     // void OnTriggerExit2D(Collider2D col)
+//     // {
+//     //     if (col.CompareTag("hazard_zone"))
+//     //     {
+//     //         Debug.Log("Player left hazard" );
+//     //     }
+//     // }
 }
