@@ -14,7 +14,15 @@ public class GameScore : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (GameSession.Instance != null)
+        {
+            score = GameSession.Instance.Score;
+        }
         UpdateUI();
+        if (PersistentGameManager.Instance != null)
+        {
+            PersistentGameManager.Instance.UpdateHighScore(score);
+        }
     }
 
     void Update()
@@ -32,7 +40,7 @@ public class GameScore : MonoBehaviour
             return;
         }
         score += amount;
-        UpdateUI();
+        SetScore(score + amount);
     }
 
     private void UpdateUI()
@@ -41,5 +49,19 @@ public class GameScore : MonoBehaviour
         {
             scoreUI.SetScore(score);
         }
+    }
+
+    public void SetScore(int value)
+    {
+        score = Mathf.Max(value, 0);
+        if (GameSession.Instance != null)
+        {
+            GameSession.Instance.Score = score;
+        }
+        if (PersistentGameManager.Instance != null)
+        {
+            PersistentGameManager.Instance.UpdateHighScore(score);
+        }
+        UpdateUI();
     }
 }

@@ -2,17 +2,34 @@ using UnityEngine;
 
 public class PersistentGameManager : MonoBehaviour
 {
-    private static PersistentGameManager instance;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static PersistentGameManager Instance
     {
-        if (instance != null && instance != this)
+        get;
+        private set;
+    }
+    private int highScore;
+    public int HighScore
+    {
+        get { return highScore; }
+    }
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
-        instance = this;
+        Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void UpdateHighScore(int currentScore)
+    {
+        if (currentScore > highScore)
+        {
+            highScore = currentScore;
+            Debug.Log("New high score: " + highScore);
+        }
     }
 }

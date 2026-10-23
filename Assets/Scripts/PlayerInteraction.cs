@@ -6,19 +6,11 @@ public class PlayerInteration : MonoBehaviour
     private GameScore gameScore;
 
     private PlayerInventory playerInventory;
-
+    const int MAX_SLOT = 5;
     void Awake()
     {
         playerInventory = GetComponent<PlayerInventory>();
     }
-
-    // void OnCollisionEnter2D(Collision2D col)
-    // {
-    //     if (col.gameObject.CompareTag("wall"))
-    //     {
-    //         Debug.Log("Hit: " + col.gameObject.name);
-    //     }
-    // }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -51,6 +43,10 @@ public class PlayerInteration : MonoBehaviour
         if (itemPickup != null)
         {
             Item item = itemPickup.CreateItem();
+            if (playerInventory.ItemCount == MAX_SLOT)
+            {
+                return;
+            }
             playerInventory.AddItem(item);
             Debug.Log("Picked up: " + item.itemName);
             Destroy(collision.gameObject);

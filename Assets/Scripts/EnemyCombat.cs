@@ -2,16 +2,14 @@ using UnityEngine;
 
 public class EnemyCombat : MonoBehaviour
 {
-    [SerializeField]
-    private int attackDamage = 10;
-    [SerializeField]
-    private float attackCD = 1f;
+    [SerializeField] private int attackDamage = 10;
+    [SerializeField] private float attackCD = 1f;
 
     private float nextAttackTime;
 
-    void OnCollisionStay2D(Collision2D col)
+    public void TryAttack(Transform target)
     {
-        if (!col.gameObject.CompareTag("Player"))
+        if (target == null)
         {
             return;
         }
@@ -19,11 +17,11 @@ public class EnemyCombat : MonoBehaviour
         {
             return;
         }
-        PlayerHealth player = col.gameObject.GetComponent<PlayerHealth>();
-        if (player != null)
+        if (!target.gameObject.TryGetComponent<PlayerHealth>(out var playerHealth))
         {
-            player.TakeDamage(attackDamage);
-            nextAttackTime = Time.time + attackCD;
+            return;
         }
+        playerHealth.TakeDamage(attackDamage);
+        nextAttackTime = Time.time + attackCD;
     }
 }

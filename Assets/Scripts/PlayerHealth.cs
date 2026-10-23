@@ -1,29 +1,44 @@
+using System;
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField]   
+    [SerializeField]
     private int maxHealth = 50;
-    [SerializeField]   
+    [SerializeField]
     private HealthBarUI healthBarUI;
-    [SerializeField]   
+    [SerializeField]
     private GameManager gameManager;
-    
+
     private int currentHealth;
-    
-    void Awake()
+    public int CurrentHealth
     {
-        currentHealth = maxHealth;
+        get { return currentHealth; }
     }
 
     void Start()
     {
+        if (GameSession.Instance != null && GameSession.Instance.HasSavedHealth)
+        {
+            currentHealth = Mathf.Clamp(
+            GameSession.Instance.CurrentHealth,
+            0,
+            maxHealth
+            );
+        }
+        else
+        {
+            currentHealth = maxHealth;
+            SaveHealth();
+        }
+
         if (healthBarUI != null)
         {
             healthBarUI.SetMaxHealth(maxHealth);
+            healthBarUI.SetHealth(currentHealth);
         }
     }
-    
+
 
     public void TakeDamage(int dmg)
     {
@@ -33,11 +48,8 @@ public class PlayerHealth : MonoBehaviour
         }
 
         currentHealth = Mathf.Max(currentHealth - dmg, 0);
-        if (healthBarUI != null)
-        {
-            healthBarUI.SetHealth(currentHealth);
-        }
-        
+        UpdateHealth();
+
         if (currentHealth == 0)
         {
             Die();
@@ -56,15 +68,44 @@ public class PlayerHealth : MonoBehaviour
 
     public void Heal(int amount)
     {
-        if (amount <= 0)
+        if (amount <= 0 || currentHealth == 0)
         {
             return;
         }
 
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        UpdateHealth();
+    }
+
+    private void UpdateHealth()
+    {
+        SaveHealth();
+
         if (healthBarUI != null)
         {
             healthBarUI.SetHealth(currentHealth);
+        }
+    }
+
+    private void SaveHealth()
+    {
+        if (GameSession.Instance != null)
+        {
+            GameSession.Instance.SaveHealth(currentHealth);
+        }
+    }
+
+    public void SetHealth(int health)
+    {
+        currentHealth = Mathf.Clamp(health, 0, maxHealth);
+        SaveHealth();
+        if (healthBarUI != null)
+        {
+            healthBarUI.SetHealth(currentHealth);
+        }
+        if (currentHealth == 0 && gameObject.activeSelf)
+        {
+            Die();
         }
     }
 }
