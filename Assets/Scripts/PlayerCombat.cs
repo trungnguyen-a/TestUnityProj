@@ -57,15 +57,15 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        if (attackPoint == null)
-        {
-            return;
-        }
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    if (attackPoint == null)
+    //    {
+    //        return;
+    //    }
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    //}
 
     private void DrawAttackCircle()
     {
