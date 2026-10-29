@@ -9,24 +9,21 @@ public class EnemyAI : MonoBehaviour
     public Transform Player => player;
     [SerializeField] private float chaseRange = 6f;
     [SerializeField] private float attackRange = 1.5f;
-    [SerializeField] private List<Transform> patrolPoints;
-    [SerializeField] private float patrolRange = 2.5f;
-    [SerializeField] private float nextPatrolTime = 3f;
+    [SerializeField] private Transform patrolPointA;
+    [SerializeField] private Transform patrolPointB;
+    [SerializeField] private float reachDistance = .1f;
 
-    public List<Transform> PatrolPoints => patrolPoints;
-    public float PatrolRange => patrolRange;
-    public float NextPatrolTime => nextPatrolTime;
-    public float patrolTime = 0;
+    public float ReachDistance => reachDistance;
     private EnemyState currentState = EnemyState.Patrol;
-    public bool isChasing => currentState == EnemyState.Chase;
-    public bool isPatrolling => currentState == EnemyState.Patrol;
+    public bool IsChasing => currentState == EnemyState.Chase;
+    public bool IsPatrolling => currentState == EnemyState.Patrol;
     private EnemyCombat enemyCombat;
-    private EnemyMovement enemyMovement;
+    private Transform currentPatrolPoint;
+    public Transform CurrentPatrolPoint => currentPatrolPoint;
 
     private void Awake()
     {
         enemyCombat = GetComponent<EnemyCombat>();
-        enemyMovement = GetComponent<EnemyMovement>();
         if (player == null)
         {
             GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
@@ -35,6 +32,7 @@ public class EnemyAI : MonoBehaviour
                 player = playerObject.transform;
             }
         }
+        currentPatrolPoint = patrolPointA;
     }
 
     private void Update()
@@ -74,15 +72,16 @@ public class EnemyAI : MonoBehaviour
 
     private void UpdateState()
     {
-        if (!isChasing)
+        if (player == null)
         {
             ChangeState(EnemyState.Patrol);
+            return;
         }
 
         float distance = Vector2.Distance(transform.position, player.position);
         if (distance > chaseRange)
         {
-            ChangeState(EnemyState.Idle);
+            ChangeState(EnemyState.Patrol);
         }
         else if (distance <= attackRange)
         {
@@ -96,39 +95,40 @@ public class EnemyAI : MonoBehaviour
 
     public void HandleIdle()
     {
-        if (Time.time < nextPatrolTime)
-        {
-            enemyMovement.currentPoint = PatrolPoints[Random.Range(0, PatrolPoints.Count)];
-            return;
-        }
-        ChangeState(EnemyState.Patrol);
-        enemyMovement.PatrolArea();
-        nextPatrolTime = Time.time + patrolTime;
     }
 
     public void HandlePatrol()
     {
-        //if (Time.time < nextPatrolTime)
-        //{
-        //    ChangeState(EnemyState.Idle);
-        //    enemyMovement.currentPoint = PatrolPoints[Random.Range(0, PatrolPoints.Count)];
-        //    return;
-        //}
-        //enemyMovement.PatrolArea();
-        //nextPatrolTime = Time.time + patrolTime;
     }
 
     public void HandleChase()
     {
-        if (isChasing)
-        {
-            enemyMovement.isPatrol = false;
-        }
     }
 
     public void HandleAttack()
     {
         enemyCombat.TryAttack(player);
+    }
+
+    public void AdvancePatrolPoint()
+    {
+        if (patrolPointA == null || patrolPointB == null) return;
+        currentPatrolPoint =
+        (currentPatrolPoint == patrolPointA) ? patrolPointB : patrolPointA;
+    }
+
+    public void SetPatrolPoint(Transform a, Transform b)
+    {
+        patrolPointA = a;
+        patrolPointB = b;
+        currentPatrolPoint = patrolPointA;
+    }
+
+    private void OnValidate()
+    {
+        chaseRange = Mathf.Max(0f, chaseRange);
+        attackRange = Mathf.Clamp(attackRange, 0f, chaseRange);
+        reachDistance = Mathf.Max(.01f, reachDistance);
     }
 
     private void OnDrawGizmos()
@@ -137,7 +137,22 @@ public class EnemyAI : MonoBehaviour
         UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, chaseRange);
         UnityEditor.Handles.color = Color.red;
         UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, attackRange);
-        //UnityEditor.Handles.color = Color.blue;
-        //UnityEditor.Handles.DrawWireDisc(patrolPoint[].position, Vector3.forward, patrolRange);
+        if (patrolPointA != null && patrolPointB != null)
+        {
+            UnityEditor.Handles.color = Color.green;
+
+            UnityEditor.Handles.DrawLine(
+            patrolPointA.position,
+            patrolPointB.position
+            );
+
+            UnityEditor.Handles.DrawWireDisc(
+            patrolPointA.position, Vector3.forward, 0.2f
+            );
+
+            UnityEditor.Handles.DrawWireDisc(
+            patrolPointB.position, Vector3.forward, 0.2f
+            );
+        }
     }
 }

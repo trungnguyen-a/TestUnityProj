@@ -5,57 +5,56 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 2f;
-    public bool isPatrol = true;
+    [SerializeField] private float patrolSpeed = 1.5f;
 
     private EnemyAI enemyAI;
     private Rigidbody2D rg;
     private float knockbackEndTime;
-    //private Transform player;
-    public Transform currentPoint;
     private void Awake()
     {
         rg = GetComponent<Rigidbody2D>();
         enemyAI = GetComponent<EnemyAI>();
     }
 
-    private void Start()
-    {
-        currentPoint = enemyAI.PatrolPoints[0];
-    }
-
     private void FixedUpdate()
     {
-        if (Time.time < knockbackEndTime)
+        if (Time.time < knockbackEndTime) return;
+
+        Transform player;
+        float speed;
+        bool isFoundPlayer;
+
+        if (enemyAI.IsChasing)
         {
-            return;
+            player = enemyAI.Player;
+            speed = moveSpeed;
         }
-
-        if (!enemyAI.isChasing)
+        else if (enemyAI.IsPatrolling)
         {
-            return;
+            player = enemyAI.CurrentPatrolPoint;
+            speed = patrolSpeed;
+
+            if (player == null) return;
+            isFoundPlayer = Vector2
+            .Distance(rg.position, player.position)
+            <= enemyAI.ReachDistance;
+
+            if (isFoundPlayer)
+            {
+                enemyAI.AdvancePatrolPoint();
+                return;
+            }
         }
-        //else if (enemyAI.isChasing)
-        //{
-        //    Vector2 dir = ((Vector2)currentPoint.position - rg.position).normalized;
-        //    Vector2 target = rg.position + dir * moveSpeed * Time.deltaTime;
-        //    rg.MovePosition(target);
-        //}
-        //else
-        //{
-        //    return;
-        //}
+        else { return; }
 
-        Debug.Log(currentPoint.name);
+        Vector2 direction =
+        ((Vector2)player.position - rg.position)
+        .normalized;
 
+        Vector2 targetPosition =
+        rg.position +
+        speed * Time.fixedDeltaTime * direction;
 
-        Transform player = enemyAI.Player;
-        if (player == null)
-        {
-            return;
-        }
-
-        Vector2 direction = ((Vector2)player.position - rg.position).normalized;
-        Vector2 targetPosition = rg.position + direction * moveSpeed * Time.deltaTime;
         rg.MovePosition(targetPosition);
     }
 
@@ -63,13 +62,4 @@ public class EnemyMovement : MonoBehaviour
     {
         knockbackEndTime = Time.time + duration;
     }
-
-    public void PatrolArea()
-    {
-        Vector2 dir = ((Vector2)currentPoint.position - rg.position).normalized;
-        Vector2 target = rg.position + dir * moveSpeed * Time.deltaTime;
-        rg.MovePosition(target);
-    }
-
-
 }
